@@ -38,6 +38,7 @@ def main():
     # Campo de chat para escribir un mensaje
     prompt = st.chat_input("Escribe tu comentario")
     if prompt:
+        print(nickname, prompt)
         save_message(nickname, prompt)
         st.success('Mensaje enviado!')
 
