@@ -48,8 +48,27 @@ def main():
     # Mostrar todos los mensajes
     st.subheader('Mensajes:')
     messages = get_messages()
+    
+    # Crear un bloque de estilo
+    st.markdown(
+        """
+        <style>
+        .message {
+            color: navy;
+            background-color: #f0f2f6;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            margin: 10px 0;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+    
+    # Usar HTML para mostrar los mensajes
     for msg in messages:
-        st.text(msg)
+        st.markdown(f'<div class="message">{msg}</div>', unsafe_allow_html=True)
 
 if __name__ == '__main__':
     main()
