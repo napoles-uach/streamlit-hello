@@ -2,23 +2,23 @@ import streamlit as st
 import os
 from rich import print
 
-# Path del archivo donde se guardarán los mensajes
+# Path of the file where messages will be stored
 FILE_PATH = 'messages.txt'
-MAX_MESSAGES = 10  # Máximo número de mensajes a guardar
+MAX_MESSAGES = 10  # Maximum number of messages to save
 
 def save_message(nickname, message):
-    """Guarda el mensaje en el archivo junto con el nickname del usuario."""
+    """Saves the message in the file along with the user's nickname."""
     full_message = f"{nickname}: {message}" if nickname else message
     messages = get_messages()
     messages.append(full_message)
-    # Mantener solo los últimos 10 mensajes
+    # Keep only the last 10 messages
     messages = messages[-MAX_MESSAGES:]
     with open(FILE_PATH, 'w') as file:
         for msg in messages:
             file.write(msg + '\n')
 
 def get_messages():
-    """Obtiene todos los mensajes guardados en el archivo."""
+    """Retrieves all messages saved in the file."""
     if not os.path.exists(FILE_PATH):
         return []
     with open(FILE_PATH, 'r') as file:
@@ -26,32 +26,32 @@ def get_messages():
     return [msg.strip() for msg in messages]
 
 def clear_messages():
-    """Borra todos los mensajes del archivo."""
+    """Clears all messages from the file."""
     open(FILE_PATH, 'w').close()
 
 def main():
-    st.title('Streamlit Hello')
+    st.title('Say Hello 👋')
     
-    # Entrada para nickname en la barra lateral
-    nickname = st.sidebar.text_input("Ingresa tu nombre o nickname (opcional):")
+    # Input for nickname in the sidebar
+    nickname = st.sidebar.text_input("Enter your name or nickname (optional):")
     
-    # Campo de chat para escribir un mensaje
-    prompt = st.chat_input("Escribe tu comentario")
+    # Chat input to write a message
+    prompt = st.chat_input("Write your comment")
     if prompt:
         print(nickname, prompt)
         save_message(nickname, prompt)
-        st.success('Mensaje enviado!')
+        st.success('Message sent!')
 
-    # Botón para borrar todos los mensajes
-    if st.button('Borrar todos los mensajes'):
+    # Button to clear all messages
+    if st.button('Clear all messages'):
         clear_messages()
-        st.success('Todos los mensajes han sido borrados.')
+        st.success('All messages have been cleared.')
 
-    # Mostrar todos los mensajes
-    st.subheader('Mensajes:')
+    # Display all messages
+    st.subheader('Messages:')
     messages = get_messages()
     
-    # Crear un bloque de estilo
+    # Create a style block
     st.markdown(
         """
         <style>
@@ -68,9 +68,10 @@ def main():
         unsafe_allow_html=True
     )
     
-    # Usar HTML para mostrar los mensajes
+    # Use HTML to display the messages
     for msg in messages:
         st.markdown(f'<div class="message">{msg}</div>', unsafe_allow_html=True)
 
 if __name__ == '__main__':
     main()
+
