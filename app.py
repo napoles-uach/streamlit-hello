@@ -1,7 +1,7 @@
 import streamlit as st
 import os
 
-# Path del archivo donde se guardaran los mensajes
+# Path del archivo donde se guardarán los mensajes
 FILE_PATH = 'messages.txt'
 
 def save_message(message):
@@ -20,12 +20,10 @@ def get_messages():
 def main():
     st.title('Streamlit Hello')
     
-    # Campo para escribir un mensaje
-    message = st.text_input('Escribe tu comentario:')
-    
-    # Botón para enviar el mensaje
-    if st.button('Enviar'):
-        save_message(message)
+    # Campo de chat para escribir un mensaje
+    prompt = st.chat_input("Escribe tu comentario")
+    if prompt:
+        save_message(prompt)
         st.success('Mensaje enviado!')
 
     # Mostrar todos los mensajes
