@@ -5,10 +5,11 @@ import os
 FILE_PATH = 'messages.txt'
 MAX_MESSAGES = 10  # Máximo número de mensajes a guardar
 
-def save_message(message):
-    """Guarda el mensaje en el archivo y asegura que no se excedan los 10 mensajes."""
+def save_message(nickname, message):
+    """Guarda el mensaje en el archivo junto con el nickname del usuario."""
+    full_message = f"{nickname}: {message}" if nickname else message
     messages = get_messages()
-    messages.append(message)
+    messages.append(full_message)
     # Mantener solo los últimos 10 mensajes
     messages = messages[-MAX_MESSAGES:]
     with open(FILE_PATH, 'w') as file:
@@ -30,14 +31,17 @@ def clear_messages():
 def main():
     st.title('Streamlit Hello')
     
+    # Entrada para nickname en la barra lateral
+    nickname = st.sidebar.text_input("Ingresa tu nombre o nickname (opcional):")
+    
     # Campo de chat para escribir un mensaje
     prompt = st.chat_input("Escribe tu comentario")
     if prompt:
-        save_message(prompt)
+        save_message(nickname, prompt)
         st.success('Mensaje enviado!')
 
     # Botón para borrar todos los mensajes
-    if st.sidebar.button('Borrar todos los mensajes'):
+    if st.button('Borrar todos los mensajes'):
         clear_messages()
         st.success('Todos los mensajes han sido borrados.')
 
