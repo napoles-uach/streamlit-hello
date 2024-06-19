@@ -39,5 +39,18 @@ def main():
     if prompt:
         save_message(nickname, prompt)
         st.success('Mensaje enviado!')
-        st
+        st.experimental_rerun()  # Rerun the app to update the message list
 
+    # Botón para borrar todos los mensajes
+    if st.button('Borrar todos los mensajes'):
+        clear_messages()
+        st.experimental_rerun()  # Rerun the app to reflect that all messages are cleared
+
+    # Mostrar todos los mensajes
+    st.subheader('Mensajes:')
+    messages = get_messages()
+    for msg in messages:
+        st.text(msg)
+
+if __name__ == '__main__':
+    main()
