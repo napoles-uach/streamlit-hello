@@ -23,6 +23,10 @@ def get_messages():
         messages = file.readlines()
     return [msg.strip() for msg in messages]
 
+def clear_messages():
+    """Borra todos los mensajes del archivo."""
+    open(FILE_PATH, 'w').close()
+
 def main():
     st.title('Streamlit Hello')
     
@@ -31,6 +35,11 @@ def main():
     if prompt:
         save_message(prompt)
         st.success('Mensaje enviado!')
+
+    # Botón para borrar todos los mensajes
+    if st.button('Borrar todos los mensajes'):
+        clear_messages()
+        st.success('Todos los mensajes han sido borrados.')
 
     # Mostrar todos los mensajes
     st.subheader('Mensajes:')
