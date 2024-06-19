@@ -1,13 +1,20 @@
 import streamlit as st
 import os
 
-# Path del archivo donde se guardaran los mensajes
+# Path del archivo donde se guardarán los mensajes
 FILE_PATH = 'messages.txt'
+MAX_MESSAGES = 10  # Máximo número de mensajes a guardar
 
-def save_message(message):
-    """Guarda el mensaje en el archivo."""
-    with open(FILE_PATH, 'a') as file:
-        file.write(message + '\n')
+def save_message(nickname, message):
+    """Guarda el mensaje en el archivo junto con el nickname del usuario."""
+    full_message = f"{nickname}: {message}" if nickname else message
+    messages = get_messages()
+    messages.append(full_message)
+    # Mantener solo los últimos 10 mensajes
+    messages = messages[-MAX_MESSAGES:]
+    with open(FILE_PATH, 'w') as file:
+        for msg in messages:
+            file.write(msg + '\n')
 
 def get_messages():
     """Obtiene todos los mensajes guardados en el archivo."""
@@ -17,22 +24,20 @@ def get_messages():
         messages = file.readlines()
     return [msg.strip() for msg in messages]
 
+def clear_messages():
+    """Borra todos los mensajes del archivo."""
+    open(FILE_PATH, 'w').close()
+
 def main():
     st.title('Streamlit Hello')
     
-    # Campo para escribir un mensaje
-    message = st.text_input('Escribe tu comentario:')
+    # Entrada para nickname en la barra lateral
+    nickname = st.sidebar.text_input("Ingresa tu nombre o nickname (opcional):")
     
-    # Botón para enviar el mensaje
-    if st.button('Enviar'):
-        save_message(message)
+    # Campo de chat para escribir un mensaje
+    prompt = st.chat_input("Escribe tu comentario")
+    if prompt:
+        save_message(nickname, prompt)
         st.success('Mensaje enviado!')
+        st
 
-    # Mostrar todos los mensajes
-    st.subheader('Mensajes:')
-    messages = get_messages()
-    for msg in messages:
-        st.text(msg)
-
-if __name__ == '__main__':
-    main()
