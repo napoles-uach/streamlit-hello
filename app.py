@@ -1,6 +1,5 @@
 import streamlit as st
 import os
-import time
 
 # Path del archivo donde se guardarán los mensajes
 FILE_PATH = 'messages.txt'
@@ -29,16 +28,6 @@ def clear_messages():
     """Borra todos los mensajes del archivo."""
     open(FILE_PATH, 'w').close()
 
-def check_for_changes():
-    """Revisa el archivo para cambios y rerun si es necesario."""
-    last_mod_time = st.session_state.get('last_mod_time', None)
-    current_mod_time = os.path.getmtime(FILE_PATH) if os.path.exists(FILE_PATH) else None
-    
-    if last_mod_time is not None and last_mod_time != current_mod_time:
-        st.experimental_rerun()
-
-    st.session_state['last_mod_time'] = current_mod_time
-
 def main():
     st.title('Streamlit Hello')
     
@@ -50,13 +39,12 @@ def main():
     if prompt:
         save_message(nickname, prompt)
         st.success('Mensaje enviado!')
+        st.experimental_rerun()  # Rerun the app to update the message list
 
     # Botón para borrar todos los mensajes
     if st.button('Borrar todos los mensajes'):
         clear_messages()
-
-    # Chequear por cambios en el archivo antes de mostrar mensajes
-    check_for_changes()
+        st.experimental_rerun()  # Rerun the app to reflect that all messages are cleared
 
     # Mostrar todos los mensajes
     st.subheader('Mensajes:')
