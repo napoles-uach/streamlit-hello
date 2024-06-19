@@ -37,7 +37,7 @@ def main():
         st.success('Mensaje enviado!')
 
     # Botón para borrar todos los mensajes
-    if st.button('Borrar todos los mensajes'):
+    if st.sidebar.button('Borrar todos los mensajes'):
         clear_messages()
         st.success('Todos los mensajes han sido borrados.')
 
