@@ -1,12 +1,16 @@
 import streamlit as st
 import os
+import logging
+
+# Configuración del logger
+logging.basicConfig(filename='app.log', level=logging.INFO, format='%(asctime)s - %(message)s')
 
 # Path del archivo donde se guardarán los mensajes
 FILE_PATH = 'messages.txt'
 MAX_MESSAGES = 10  # Máximo número de mensajes a guardar
 
 def save_message(nickname, message):
-    """Guarda el mensaje en el archivo junto con el nickname del usuario."""
+    """Guarda el mensaje en el archivo junto con el nickname del usuario y registra en el log."""
     full_message = f"{nickname}: {message}" if nickname else message
     messages = get_messages()
     messages.append(full_message)
@@ -15,6 +19,8 @@ def save_message(nickname, message):
     with open(FILE_PATH, 'w') as file:
         for msg in messages:
             file.write(msg + '\n')
+    # Registrar el mensaje en el log
+    logging.info(full_message)
 
 def get_messages():
     """Obtiene todos los mensajes guardados en el archivo."""
@@ -39,12 +45,11 @@ def main():
     if prompt:
         save_message(nickname, prompt)
         st.success('Mensaje enviado!')
-        st.experimental_rerun()  # Rerun the app to update the message list
 
     # Botón para borrar todos los mensajes
     if st.button('Borrar todos los mensajes'):
         clear_messages()
-        st.experimental_rerun()  # Rerun the app to reflect that all messages are cleared
+        st.success('Todos los mensajes han sido borrados.')
 
     # Mostrar todos los mensajes
     st.subheader('Mensajes:')
