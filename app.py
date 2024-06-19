@@ -45,6 +45,7 @@ def main():
     if prompt:
         save_message(nickname, prompt)
         st.success('Mensaje enviado!')
+        print(nickname, prompt)
 
     # Botón para borrar todos los mensajes
     if st.button('Borrar todos los mensajes'):
