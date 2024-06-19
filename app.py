@@ -1,16 +1,12 @@
 import streamlit as st
 import os
-import logging
-
-# Configuración del logger
-logging.basicConfig(filename='app.log', level=logging.INFO, format='%(asctime)s - %(message)s')
 
 # Path del archivo donde se guardarán los mensajes
 FILE_PATH = 'messages.txt'
 MAX_MESSAGES = 10  # Máximo número de mensajes a guardar
 
 def save_message(nickname, message):
-    """Guarda el mensaje en el archivo junto con el nickname del usuario y registra en el log."""
+    """Guarda el mensaje en el archivo junto con el nickname del usuario."""
     full_message = f"{nickname}: {message}" if nickname else message
     messages = get_messages()
     messages.append(full_message)
@@ -19,8 +15,6 @@ def save_message(nickname, message):
     with open(FILE_PATH, 'w') as file:
         for msg in messages:
             file.write(msg + '\n')
-    # Registrar el mensaje en el log
-    logging.info(full_message)
 
 def get_messages():
     """Obtiene todos los mensajes guardados en el archivo."""
@@ -45,7 +39,6 @@ def main():
     if prompt:
         save_message(nickname, prompt)
         st.success('Mensaje enviado!')
-        print(nickname, prompt)
 
     # Botón para borrar todos los mensajes
     if st.button('Borrar todos los mensajes'):
@@ -55,8 +48,27 @@ def main():
     # Mostrar todos los mensajes
     st.subheader('Mensajes:')
     messages = get_messages()
+    
+    # Crear un bloque de estilo
+    st.markdown(
+        """
+        <style>
+        .message {
+            color: navy;
+            background-color: #f0f2f6;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            margin: 10px 0;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+    
+    # Usar HTML para mostrar los mensajes
     for msg in messages:
-        st.text(msg)
+        st.markdown(f'<div class="message">{msg}</div>', unsafe_allow_html=True)
 
 if __name__ == '__main__':
     main()
