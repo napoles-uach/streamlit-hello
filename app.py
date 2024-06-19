@@ -3,11 +3,17 @@ import os
 
 # Path del archivo donde se guardarán los mensajes
 FILE_PATH = 'messages.txt'
+MAX_MESSAGES = 10  # Máximo número de mensajes a guardar
 
 def save_message(message):
-    """Guarda el mensaje en el archivo."""
-    with open(FILE_PATH, 'a') as file:
-        file.write(message + '\n')
+    """Guarda el mensaje en el archivo y asegura que no se excedan los 10 mensajes."""
+    messages = get_messages()
+    messages.append(message)
+    # Mantener solo los últimos 10 mensajes
+    messages = messages[-MAX_MESSAGES:]
+    with open(FILE_PATH, 'w') as file:
+        for msg in messages:
+            file.write(msg + '\n')
 
 def get_messages():
     """Obtiene todos los mensajes guardados en el archivo."""
