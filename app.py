@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+from rich import print
 
 # Path del archivo donde se guardarán los mensajes
 FILE_PATH = 'messages.txt'
